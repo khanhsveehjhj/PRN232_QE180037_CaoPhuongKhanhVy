@@ -5,7 +5,24 @@ using ProductManagement.Service;
 using DotNetEnv;
 
 // Load environment variables from .env file
-Env.Load();
+try
+{
+    // Try to load from parent directory (where .env is located)
+    var envPath = Path.Combine(Directory.GetCurrentDirectory(), "..", ".env");
+    if (File.Exists(envPath))
+    {
+        Env.Load(envPath);
+    }
+    else
+    {
+        // Try current directory
+        Env.Load();
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Failed to load .env file: {ex.Message}");
+}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +51,8 @@ builder.Services.Configure<CloudinarySettings>(options =>
     options.ApiKey = Environment.GetEnvironmentVariable("CLOUDINARY_API_KEY") ?? "";
     options.ApiSecret = Environment.GetEnvironmentVariable("CLOUDINARY_API_SECRET") ?? "";
 });
+
+// Register Cloudinary service
 builder.Services.AddScoped<IImageUploadService, CloudinaryService>();
 
 var app = builder.Build();

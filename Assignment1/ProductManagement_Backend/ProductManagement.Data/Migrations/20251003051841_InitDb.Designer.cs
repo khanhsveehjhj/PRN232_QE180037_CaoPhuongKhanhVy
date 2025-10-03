@@ -11,7 +11,7 @@ using ProductManagement.Data;
 namespace ProductManagement.Data.Migrations
 {
     [DbContext(typeof(ProductManagementDbContext))]
-    [Migration("20250924094635_InitDb")]
+    [Migration("20251003051841_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />

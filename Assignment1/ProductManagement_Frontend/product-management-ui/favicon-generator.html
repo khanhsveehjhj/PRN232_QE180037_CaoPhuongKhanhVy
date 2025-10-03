@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favicon Generator</title>
+</head>
+<body>
+    <canvas id="canvas" width="32" height="32"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Blue background
+        ctx.fillStyle = '#2563eb';
+        ctx.fillRect(0, 0, 32, 32);
+        
+        // Shop building - white
+        ctx.fillStyle = 'white';
+        ctx.fillRect(4, 12, 24, 16);
+        
+        // Roof - darker blue
+        ctx.fillStyle = '#1d4ed8';
+        ctx.beginPath();
+        ctx.moveTo(2, 12);
+        ctx.lineTo(16, 2);
+        ctx.lineTo(30, 12);
+        ctx.lineTo(28, 12);
+        ctx.lineTo(16, 4);
+        ctx.lineTo(4, 12);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Door
+        ctx.fillStyle = '#2563eb';
+        ctx.fillRect(13, 18, 6, 10);
+        
+        // Door handle
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(17, 22, 1, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Windows
+        ctx.fillStyle = '#2563eb';
+        ctx.fillRect(6, 14, 4, 3);
+        ctx.fillRect(22, 14, 4, 3);
+        
+        // Window frames
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(8, 14);
+        ctx.lineTo(8, 17);
+        ctx.moveTo(6, 15.5);
+        ctx.lineTo(10, 15.5);
+        ctx.moveTo(24, 14);
+        ctx.lineTo(24, 17);
+        ctx.moveTo(22, 15.5);
+        ctx.lineTo(26, 15.5);
+        ctx.stroke();
+        
+        // Convert to ICO format (simplified)
+        console.log('Canvas created with shop favicon');
+    </script>
+</body>
+</html>

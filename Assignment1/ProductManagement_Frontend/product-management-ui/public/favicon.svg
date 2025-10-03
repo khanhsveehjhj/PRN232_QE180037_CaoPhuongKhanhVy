@@ -1,0 +1,25 @@
+<!-- Shop favicon for browser tab -->
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue background circle -->
+  <circle cx="16" cy="16" r="16" fill="#2563eb"/>
+  
+  <!-- Shop building -->
+  <rect x="6" y="12" width="20" height="16" rx="1" fill="white"/>
+  
+  <!-- Roof -->
+  <path d="M4 12 L16 4 L28 12 L26 12 L16 6 L6 12 Z" fill="#1d4ed8"/>
+  
+  <!-- Door -->
+  <rect x="13" y="19" width="6" height="9" rx="0.5" fill="#2563eb"/>
+  <circle cx="17.5" cy="23" r="0.8" fill="white"/>
+  
+  <!-- Windows -->
+  <rect x="8" y="15" width="4" height="3" rx="0.5" fill="#2563eb"/>
+  <rect x="20" y="15" width="4" height="3" rx="0.5" fill="#2563eb"/>
+  
+  <!-- Window frames -->
+  <line x1="10" y1="15" x2="10" y2="18" stroke="white" stroke-width="0.5"/>
+  <line x1="8" y1="16.5" x2="12" y2="16.5" stroke="white" stroke-width="0.5"/>
+  <line x1="22" y1="15" x2="22" y2="18" stroke="white" stroke-width="0.5"/>
+  <line x1="20" y1="16.5" x2="24" y2="16.5" stroke="white" stroke-width="0.5"/>
+</svg>

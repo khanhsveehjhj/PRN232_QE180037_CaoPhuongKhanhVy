@@ -31,7 +31,7 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_S
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ProductManagementDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("ProductManagement.Data")));
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -41,10 +41,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000", "http://localhost:3001")
+        policy.WithOrigins(
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "https://localhost:7158",
+            "https://prn-232-qe-180037-cao-phuong-khanh.vercel.app",
+            "https://*.vercel.app") // Allow specific Vercel domain and all Vercel subdomains
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowCredentials()
+              .SetIsOriginAllowedToAllowWildcardSubdomains();
     });
 });
 
@@ -68,6 +74,22 @@ builder.Services.Configure<CloudinarySettings>(options =>
 builder.Services.AddScoped<IImageUploadService, CloudinaryService>();
 
 var app = builder.Build();
+
+// Auto-migrate database on startup
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ProductManagementDbContext>();
+    try
+    {
+        context.Database.Migrate();
+        Console.WriteLine("Database migration completed successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database migration failed: {ex.Message}");
+        // Log but don't crash the application
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -37,20 +37,28 @@ builder.Services.AddDbContext<ProductManagementDbContext>(options =>
 builder.Services.AddControllers();
 
 // Add CORS policy
+var corsOriginsFromEnv = Environment.GetEnvironmentVariable("CORS_ALLOWED_ORIGINS");
+var allowedOrigins = !string.IsNullOrEmpty(corsOriginsFromEnv)
+    ? corsOriginsFromEnv.Split(',', StringSplitOptions.RemoveEmptyEntries)
+    : builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+      ?? new string[] { "http://localhost:3000", "https://prn-232-qe-180037-cao-phuong-khanh.vercel.app" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:3000",
-            "http://localhost:3001",
-            "https://localhost:7158",
-            "https://prn-232-qe-180037-cao-phuong-khanh.vercel.app",
-            "https://*.vercel.app") // Allow specific Vercel domain and all Vercel subdomains
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials()
-              .SetIsOriginAllowedToAllowWildcardSubdomains();
+              .AllowCredentials();
+    });
+
+    // Alternative policy for development that allows all origins
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
@@ -100,8 +108,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Use CORS
-app.UseCors("AllowFrontend");
+// Use CORS - Use AllowFrontend for production, AllowAll for development if needed
+app.UseCors(app.Environment.IsDevelopment() ? "AllowAll" : "AllowFrontend");
 
 // Map controller endpoints
 app.MapControllers();

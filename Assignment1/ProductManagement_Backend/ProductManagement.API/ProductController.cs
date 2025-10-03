@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using ProductManagement.Data;
 using ProductManagement.Service;
 
@@ -6,6 +7,7 @@ namespace ProductManagement.API
 {
     [ApiController]
     [Route("api/products")]
+    [EnableCors("AllowFrontend")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _service;
